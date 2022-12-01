@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Importing css styles -->
+    <link rel="stylesheet" href="./index.css" />
+    <title>Turing DAPP</title>
+  </head>
+  <body>
+    <div class="profa-section">   <!-- AREA DA PROFA -->
+      <!--
+        function issueToken( addr do receptor , quantidade de  saTurings)
+          saTuring é a menor unidade de turing (10^-18)
+          Esse método poderá ser executado por apenas 1 usuário... a professora (0xA5095296F7fF9Bdb01c22e3E0aC974C8963378ad) !! 
+          Ele criará a quantidade especificada de Turings na carteira do receptor )
+      -->
+      <section>
+        <form>
+          <section class="section-header">
+            <h1>Criar Turings na Carteira</h1>
+          </section>
+          <label for="addr-receptor">Endereço do Receptor</label>
+          <input type="text" autocomplete="off" id="addr-receptor" />
+          <label for="qtd-tur">Quantidade de Turings</label>
+          <input type="number" id="qtd-tur"/>
+          <input type="button" value="Mandar Bala" id="issue-token" />
+        </form>
+      </section>
+
+      <!--
+        function endVoting()
+          Este método poderá ser executado apenas pela professora. 
+          Após sua execução finaliza-se a votação 
+          (isto é, se alguém executar "vote()" nada deve acontecer).
+      -->
+      <section>
+        <form>
+          <section class="section-header">
+            <h1>Finalizar Votação</h1>
+          </section>
+          <input type="button" value="Mandar Bala" id="end-voting" />
+        </form>
+      </section>
+    </div>
+    
+
+    <div class="noobs-section">   <!-- AREA DA NOOBS -->
+      <!--
+        function vote(codinome, quantidade de saTurings)
+          Esse método pode ser executado por qualquer usuário autorizado, 
+          mas um mesmo usuário só pode votar uma vez em um codinome). 
+          Além disso o próprio usuário não pode votar em si mesmo. 
+          A quantidade de turings não pode ser maior do que 2 
+          (neste caso 2*10^18 saTurings)
+          Aqui haverá minting da quantidade de saTurings especificada,
+          para o Addr associado ao codinome
+          Além disso, a pessoa que vota também ganha 0,2 Turing
+      -->
+      <section class="vote-section">
+        <form>
+          <section class="section-header">
+            <h1>Votar</h1>
+          </section>
+          <label for="codinome">Codinome do Xoblinha</label>
+          <input type="text" autocomplete="off" id="codinome" />
+          <label for="qtd-tur-v">Quantidade de Turings</label>
+          <input type="number" id="qtd-tur-v" />
+          <input type="button" value="Mandar Bala" id="votar" />
+        </form>
+      </section>
+    </div>
+
+    <!-- Importing Ethers.js script -->
+    <script
+      src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"
+      type="application/javascript"
+    ></script>
+
+    <!-- Importing our javascript file -->
+    <script src="./index.js"></script>
+  </body>
+</html>
