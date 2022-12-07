@@ -1,95 +1,403 @@
 // 1. Declare global variable to store the smart contract instance
-let PetContract;
+let TDAContract;
+let membros = [];
 
 // 2. Set contract address and ABI
-const Pet_Contract_Address = "0x76f35087640825606A5077F44701cf67eb0E83f1";
-const Pet_Contract_ABI = [
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "newPetName",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "newPetOwner",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "newPetAge",
-        type: "string",
-      },
-    ],
-    name: "setPet",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getPet",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "petAge",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "petName",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "petOwner",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
+const Contract_Address = "0xA7C07eb28Ddda3A4e6E86AEE1AC07386832e3dB9";
+const Contract_ABI = [
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "Approval",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "Transfer",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			}
+		],
+		"name": "allowance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "approve",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "decimals",
+		"outputs": [
+			{
+				"internalType": "uint8",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "subtractedValue",
+				"type": "uint256"
+			}
+		],
+		"name": "decreaseAllowance",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "endVoting",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getMembros",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "codinome",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "qtdVotos",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct TuringDapp.MembroSlim[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getPapel",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "addedValue",
+				"type": "uint256"
+			}
+		],
+		"name": "increaseAllowance",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "receiver_addr",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "qtd_ST",
+				"type": "uint256"
+			}
+		],
+		"name": "issueToken",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "qtdMembros",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "qtdVotos",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalSupply",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transfer",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "codinome",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "qtd_ST",
+				"type": "uint256"
+			}
+		],
+		"name": "vote",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
 ];
+
+// 4. Creating variables for reusable dom elements
+const profaSec = document.querySelector(".profa-section");
+const noobsSec = document.querySelector(".noobs-section");
+const resultadoSec = document.querySelector(".votacao-section");
+const membroSec = document.querySelector(".membros-section");
+
+const issueTokenButton = document.querySelector("#issue-token");
+const endVotingButton = document.querySelector("#end-voting");
+const votarButton = document.querySelector("#votar");
 
 /* 3. Prompt user to sign in to MetaMask */
 const provider = new ethers.providers.Web3Provider(window.ethereum, "goerli");
@@ -97,107 +405,167 @@ provider.send("eth_requestAccounts", []).then(() => {
   provider.listAccounts().then((accounts) => {
     const signer = provider.getSigner(accounts[0]);
 
-    /* 3.1 Create instance of pet smart contract */
-    PetContract = new ethers.Contract(
-      Pet_Contract_Address,
-      Pet_Contract_ABI,
+    /* 3.1 Create instance of smart contract */
+    TDAContract = new ethers.Contract(
+      Contract_Address,
+      Contract_ABI,
       signer
     );
+
   });
 });
 
-// 4. Creating variables for reusable dom elements
-const profaSec = document.querySelector(".profa-section");
-const noobsSec = document.querySelector(".noobs-section");
-const voteSection = document.querySelector(".vote-section");
+const getPapel = async () => {
+  // verifica o papel do usuário 
+  // e habilitando ou bloqueia seções se necessário
+  const papel = await TDAContract.getPapel();
+  // console.log(papel);
 
-const issueTokenButton = document.querySelector("#issue-token");
-const endVotingButton = document.querySelector("#end-voting");
-const votarButton = document.querySelector("#votar");
+  if (papel === "Profa" && resultadoSec.style.display !== "block") {
+    // habilita apenas a seção da Professora
+    profaSec.style.display = "block";
+    noobsSec.style.display = "";
+  } else if (papel === "Membro" && resultadoSec.style.display !== "block") {
+    // habilita apenas a seção de Membros
+    noobsSec.style.display = "block";
+    profaSec.style.display = ""; 
+  } else if (papel === "Nada") {  
+    // bloqueia as seções
+    profaSec.style.display = "";  
+    noobsSec.style.display = "";
+  }
+}
 
-/* 5. Function to set pet details */
+setInterval(getPapel, 5000); 
+// A cada 5 segundos verifica o papel do usuário 
+// e bloqueia seções se necessário
+
 const issueToken = () => {
-  setPetButton.value = "Criando Turings...";
+  issueTokenButton.value = "Criando Turings...";
 
-  /* 5.1 Get inputs from pet form */
+  /* Get inputs from pet form */
   const addrReceptorIn = document.querySelector("#addr-receptor");
   const qtdTurIn = document.querySelector("#qtd-tur");
 
-  // 5.2 Getting values from the inputs
-  addrReceptor = addrReceptorIn.value;
-  qtdTur = qtdTurIn.value;
+  // Getting values from the inputs
+  const addrReceptor = addrReceptorIn.value;
+  const qtdTur = qtdTurIn.value;
 
-  /* 5.3 Set pet details in smart contract */
-  PetContract.setPet(addrReceptor, qtdTur)
+  /* issueToken in smart contract */
+  TDAContract.issueToken(addrReceptor, qtdTur)
     .then(() => {
       // update button value
-      setPetButton.value = "Criado com Sucesso!";
+      issueTokenButton.value = "Criado com Sucesso!";
 
       /* 5.4 Reset form */
-      addrReceptor.value = "";
-      qtdTur.value = "";
+      addrReceptorIn.value = "";
+      qtdTurIn.value = "";
 
       // update button value
-      setPetButton.value = "Mandar Bala";
+      issueTokenButton.value = "Mandar Bala";
     })
     .catch((err) => {
       // If error occurs, display error message
-      setPetButton.value = "Mandar Bala";
-      alert("Error setting pet details" + err.message);
+      issueTokenButton.value = "Mandar Bala";
+      if (err.hasOwnProperty("error")) {
+        alert(err.error.message);
+      }
     });
 };
-
 issueTokenButton.addEventListener("click", issueToken);
 
 
+const endVoting = () => {
+  endVotingButton.value = "Finalizando Votação...";
 
-/// FEITO DAQUI PRA CIMA!!!
+  TDAContract.endVoting()
+    .then(() => {
+      // update button value
+      issueTokenButton.value = "Votação Finalizada!";
+    })
+    .catch((err) => {
+      // If error occurs, display error message
+      issueTokenButton.value = "Mandar Bala";
+      if (err.hasOwnProperty("error")) {
+        alert(err.error.message);
+      }
+    });
+};
+endVotingButton.addEventListener("click", endVoting);
+
+
+const vote = () => {
+  votarButton.value = "Votando...";
+
+  /* Get inputs from pet form */
+  const codinomeIn = document.querySelector("#codinome");
+  const qtdTurIn = document.querySelector("#qtd-tur-v");
+
+  // Getting values from the inputs
+  const codinome = codinomeIn.value;
+  const qtdTur = qtdTurIn.value;
+
+  /* issueToken in smart contract */
+  TDAContract.vote(codinome, qtdTur)
+    .then(() => {
+      alert("Votado com Sucesso!");
+      codinome.value = "";
+      qtdTurIn.value = "";
+      votarButton.value = "Mandar Bala";
+    })
+    .catch((err) => {
+      votarButton.value = "Mandar Bala";
+      if (err.hasOwnProperty("error")) {
+        alert(err.error.message);
+      }
+    });
+};
+votarButton.addEventListener("click", vote);
 
 
 
+const loadMembros = async () => {
+  const membros = await TDAContract.getMembros();
+  membroSec.replaceChildren();
+
+  for (var i in membros) {
+    var membro = membros[i];
+
+    var membroDiv=document.createElement('div');
+    membroDiv.classList.add("div-membro");
+
+    var membroCode=document.createElement('div');
+    membroCode.classList.add("membro-code");
+    const codinome = document.createTextNode(membro["codinome"]);
+    membroCode.appendChild(codinome);
+
+    var membroVotos=document.createElement('div');
+    membroVotos.classList.add("membro-votos");
+    const qtdVotos = document.createTextNode(membro["qtdVotos"]);
+    membroVotos.appendChild(qtdVotos);
+
+    membroDiv.appendChild(membroCode);
+    membroDiv.appendChild(membroVotos);
+  
+    membroSec.appendChild(membroDiv);
+  }
+}
 
 
-
-
-
-/* 6. Function to get pet details */
-const getCurrentPet = async () => {
-  setPetButton.value = "Getting Pet...";
-
-  /* 6.1 Get pet details from smart contract */
-  const pet = await PetContract.getPet();
-
-  /* 6.2 Display the pet details section 
-  and
-  Hide the pet form in the DOM */
-  petSection.style.display = "block";
-  petFormSection.style.display = "none";
-
-  /* 6.3 Pet is an array of 3 strings [petName, petOwner, petAge] */
-  const petName = pet[0];
-  const petOwner = pet[1];
-  const petAge = pet[2];
-
-  /* 6.4 Display pet details in DOM */
-  document.querySelector(".pet-detail-name").innerText = petName;
-  document.querySelector(".pet-detail-owner").innerText = petOwner;
-  document.querySelector(".pet-detail-age").innerText = petAge;
+const resultadoVotacao = async () => {
+  profaSec.style.display = "";
+  noobsSec.style.display = "";
+  resultadoSec.style.display = "block";
+  await loadMembros();
 };
 
-/* 7. Function to show the pet form on click of button */
-showPetFormBtn.addEventListener("click", () => {
-  petSection.style.display = "none";
-  petFormSection.style.display = "block";
-  setPetButton.value = "Submit";
-});
+const voltarMain = async () => {
+  resultadoSec.style.display = "";
+  await getPapel();
+};
 
-/* 8. Function to refresh pet details */
-refreshBtn.addEventListener("click", (e) => {
-  e.target.innerText = "Refreshing...";
-  getCurrentPet().then(() => {
-    e.target.innerText = "Refreshed";
-    setTimeout(() => {
-      e.target.innerText = "Refresh";
-    }, 2000);
-  });
-});
+
+const atualizarResults = async () => {
+  await resultadoVotacao();
+  alert("Atualizado!")
+}

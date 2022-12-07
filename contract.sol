@@ -5,10 +5,16 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract TuringDapp is ERC20 {
+    struct MembroSlim {
+        string codinome;
+        uint qtdVotos;
+    }
+
     struct Membro {
         uint256 id;
         address addr;
         string codinome;
+        uint256 qtdVotos;
     }
     struct Voto {
         uint256 id;
@@ -52,11 +58,23 @@ contract TuringDapp is ERC20 {
         addMembro(0xFADAf046e6Acd9E276940C728f6B3Ac1A043054c, "Bonella");
     }
 
+    function getMembros() public view returns (MembroSlim[] memory) {
+        MembroSlim[] memory all_membros = new MembroSlim[](qtdMembros);
+        for (uint i = 0; i < qtdMembros; i++) {
+            MembroSlim memory  membroSlim = all_membros[i];
+            Membro memory membro = membros[i];
+            membroSlim.codinome = membro.codinome;
+            membroSlim.qtdVotos = membro.qtdVotos;
+        }
+        return all_membros;
+    }
+
     function addMembro(address addr, string memory codinome) internal {
         membros[qtdMembros] = Membro(
             qtdMembros,
             addr,
-            codinome
+            codinome,
+            0
         );
         qtdMembros++;
     }
@@ -69,6 +87,19 @@ contract TuringDapp is ERC20 {
             qtd_ST
         );
         qtdVotos++;
+    }
+
+    function getPapel() public view returns (string memory) {
+        if (msg.sender == profa_addr) {
+            return "Profa";
+        }
+        for (uint256 i = 0; i < qtdMembros; i++) {
+            Membro storage membro = membros[i];
+            if (msg.sender == membro.addr) {
+                return "Membro";
+            }
+        }
+        return "Nada";
     }
 
     function issueToken(address receiver_addr, uint256 qtd_ST) public {
@@ -109,6 +140,7 @@ contract TuringDapp is ERC20 {
                         erro = "Erro durante o Voto";
                         voto_ok = votar(votante.id, votado.id, qtd_ST);
                         if (voto_ok) {
+                            votado.qtdVotos += 1;
                             _mint(votado.addr, qtd_ST);
                             _mint(votante.addr, 2 * 10**17);  // 0,2 Turings para quem esta votando
                         }

@@ -21,7 +21,7 @@ body {
 .section-header{
     font-size: 1.5rem;
     font-weight: bold;
-    margin-bottom: 1rem;
+    margin-bottom: 10px;
     background-color: #333333;
     color: #ffffff;
     padding: 0.5rem 1rem;
@@ -57,16 +57,14 @@ input[type=button]{
     cursor: pointer;
 }
 
-/* Pet details section */
 .profa-section{
   display: none; /* hidden by default */
 }
-
-.pet-detail-heading {
-  font-size: 16px;
-  margin-bottom: 10px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
+.noobs-section{
+  display: none; /* hidden by default */
+}
+.votacao-section{
+  display: none; /* hidden by default */
 }
 
 .section-footer{
@@ -74,4 +72,44 @@ input[type=button]{
   gap: 12px;
 }
 
+button{
+  width: 100%;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+
+  border: 1px solid #333333;
+  background-color: #333333;
+  color: #fff;
+  cursor: pointer;
+}
+
+.membros-section {
+  margin-bottom: 10px;
+}
+
+.div-membro {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  margin-bottom: 3px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.membro-code { grid-area: 1 / 1 / 2 / 5; border-radius: 5px; border: 1px solid #333333;}
+.membro-votos { grid-area: 1 / 5 / 2 / 6; border-radius: 5px; border: 1px solid #333333; text-align: center;}
+
+
+.botoes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
   
+.bt1 { grid-area: 1 / 1 / 2 / 2; margin-right: 3px;}
+.bt2 { grid-area: 1 / 2 / 2 / 3; margin-left: 3px;}

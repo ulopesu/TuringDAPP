@@ -9,7 +9,8 @@
     <title>Turing DAPP</title>
   </head>
   <body>
-    <div class="profa-section">   <!-- AREA DA PROFA -->
+    <div class="profa-section">
+      <!-- AREA DA PROFA -->
       <!--
         function issueToken( addr do receptor , quantidade de  saTurings)
           saTuring é a menor unidade de turing (10^-18)
@@ -24,11 +25,12 @@
           <label for="addr-receptor">Endereço do Receptor</label>
           <input type="text" autocomplete="off" id="addr-receptor" />
           <label for="qtd-tur">Quantidade de Turings</label>
-          <input type="number" id="qtd-tur"/>
+          <input type="number" id="qtd-tur" />
           <input type="button" value="Mandar Bala" id="issue-token" />
         </form>
       </section>
-
+      <br />
+      <br />
       <!--
         function endVoting()
           Este método poderá ser executado apenas pela professora. 
@@ -43,10 +45,13 @@
           <input type="button" value="Mandar Bala" id="end-voting" />
         </form>
       </section>
+      <br />
+      <br />
+      <button onclick="resultadoVotacao()">Ver Resultado Votação</button>
     </div>
-    
 
-    <div class="noobs-section">   <!-- AREA DA NOOBS -->
+    <div class="noobs-section">
+      <!-- AREA DA NOOBS -->
       <!--
         function vote(codinome, quantidade de saTurings)
           Esse método pode ser executado por qualquer usuário autorizado, 
@@ -58,17 +63,40 @@
           para o Addr associado ao codinome
           Além disso, a pessoa que vota também ganha 0,2 Turing
       -->
-      <section class="vote-section">
+      <section>
         <form>
           <section class="section-header">
             <h1>Votar</h1>
           </section>
-          <label for="codinome">Codinome do Xoblinha</label>
+          <label for="codinome">Codinome</label>
           <input type="text" autocomplete="off" id="codinome" />
           <label for="qtd-tur-v">Quantidade de Turings</label>
           <input type="number" id="qtd-tur-v" />
           <input type="button" value="Mandar Bala" id="votar" />
         </form>
+      </section>
+      <br />
+      <br />
+      <button onclick="resultadoVotacao()">Ver Resultado Votação</button>
+    </div>
+
+    <div class="votacao-section">
+      <!-- RESULTADO VOTAÇÃO -->
+      <section>
+        <section class="section-header">
+          <h1>Resultado Votação</h1>
+        </section>
+        <div class="membros-section">
+          <div class="div-membro"></div>
+        </div>
+        <div class="botoes">
+          <div class="bt1"> 
+            <button onclick="voltarMain()">Voltar</button>
+          </div>
+          <div class="bt2"> 
+            <button onclick="atualizarResults()">Atualizar</button>
+          </div>
+        </div>
       </section>
     </div>
 
